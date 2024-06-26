@@ -1,0 +1,274 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "3D Printing Materials API",
+    "description": "API for managing materials",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/materials": {
+      "get": {
+        "summary": "Retrieve all materials",
+        "responses": {
+          "200": {
+            "description": "A list of materials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "materials": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Material"
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new material",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewMaterial"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Material created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "material": {
+                      "$ref": "#/components/schemas/Material"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/materials/{id}": {
+      "get": {
+        "summary": "Retrieve a material by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved material successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "material": {
+                      "$ref": "#/components/schemas/Material"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a material by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMaterial"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Material updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "material": {
+                      "$ref": "#/components/schemas/Material"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a material by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Material deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "material": {
+                      "$ref": "#/components/schemas/Material"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Material": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The material's ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the material"
+          },
+          "technology": {
+            "type": "string",
+            "description": "The technology used in the material. Must be one of: FDM, SLA, SLS"
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Array of colors available in the material"
+          },
+          "pricePerGram": {
+            "type": "number",
+            "description": "Price per gram of the material"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "URL of the image for the material"
+          }
+        }
+      },
+      "NewMaterial": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the material"
+          },
+          "technology": {
+            "type": "string",
+            "description": "The technology used in the material"
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Array of colors available in the material"
+          },
+          "pricePerGram": {
+            "type": "number",
+            "description": "Price per gram of the material"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "URL of the image for the material"
+          }
+        }
+      },
+      "UpdateMaterial": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The updated name of the material"
+          },
+          "technology": {
+            "type": "string",
+            "description": "The updated technology used in the material"
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Updated array of colors available in the material"
+          },
+          "pricePerGram": {
+            "type": "number",
+            "description": "Updated price per gram of the material"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "Updated URL of the image for the material"
+          }
+        }
+      }
+    }
+  }
+}
