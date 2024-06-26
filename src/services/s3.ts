@@ -19,6 +19,13 @@ const s3 = new AWS.S3({
   region: AWS_REGION,
 });
 
+/**
+ * Fetches an image from a given URL.
+ * @param {string} imageUrl - The URL of the image to fetch.
+ * @returns {Promise<Buffer>} A Promise that resolves with the image data as a Buffer.
+ * @throws {Error} Throws an error if fetching the image fails or the status code is not 200.
+ */
+
 const fetchImage = async (imageUrl: string): Promise<Buffer> => {
   const response = await axios.get(imageUrl, {
     responseType: "arraybuffer",
@@ -33,10 +40,17 @@ const fetchImage = async (imageUrl: string): Promise<Buffer> => {
   return Buffer.from(response.data, "binary");
 };
 
-export const uploadImageToS3 = async (imageUrl: string) => {
-  try {
-    const fileContent = await fetchImage(imageUrl);
+/**
+ * Uploads an image fetched from a URL to AWS S3.
+ * @param {string} imageUrl - The URL of the image to upload.
+ * @returns {Promise<string>} A Promise that resolves with the uploaded image URL on S3.
+ * @throws {Error} Throws an error if fetching the image fails or if uploading to S3 fails.
+ */
 
+export const uploadImageToS3 = async (imageUrl: string): Promise<string> => {
+  const fileContent = await fetchImage(imageUrl);
+
+  try {
     if (!fileContent) {
       throw new Error("Failed to fetch image");
     }
@@ -50,9 +64,9 @@ export const uploadImageToS3 = async (imageUrl: string) => {
     const data = await s3.upload(params).promise();
 
     console.log("Image uploaded successfully:", data);
-    const ImageUrl = data.Location;
+    const imageUrl = data.Location;
 
-    return ImageUrl;
+    return imageUrl;
   } catch (error) {
     console.error("Error uploading image to S3:", error);
     throw error;

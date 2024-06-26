@@ -1,7 +1,14 @@
 import "dotenv/config";
 import mongoose from "mongoose";
 
-export const connectToDatabase = async () => {
+/**
+ * Connects to MongoDB using Mongoose.
+ * @async
+ * @returns {Promise<void>} A Promise that resolves when the connection is successful.
+ * @throws {Error} Throws an error if MongoDB connection URL is undefined or if connection fails.
+ */
+
+export const connectToDatabase = async (): Promise<void> => {
   try {
     const mongoURL = process.env.MONGO_URL;
 

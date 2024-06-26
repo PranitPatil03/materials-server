@@ -15,11 +15,18 @@ app.use(cors());
 
 app.use("/materials", materialRouter);
 
-app.get("/test", (req: Request, res: Response) => {
-  res.send({
-    status: "true",
-    message: "Backend Test Route",
-  });
+app.get("/healthy", (req: Request, res: Response) => {
+  try {
+    res.send({
+      status: true,
+      message: "Backend is healthy",
+    });
+  } catch (error: any) {
+    res.send({
+      status: false,
+      message: error.message,
+    });
+  }
 });
 
 app.listen(PORT, () => {

@@ -3,6 +3,13 @@ import { MaterialType } from "../services/types";
 import { Materials } from "../models/Materials";
 import { uploadImageToS3 } from "../services/s3";
 
+/**
+ * Retrieves all materials from the database and sends a JSON response.
+ * @param {import('express').Request} req - The Express Request object.
+ * @param {import('express').Response} res - The Express Response object.
+ * @returns {Promise<void>} Retrieves all materials from the database in JSON format.
+ */
+
 export const getAllMaterials = async (req: Request, res: Response) => {
   try {
     const allMaterials: MaterialType[] = await Materials.find();
@@ -23,6 +30,13 @@ export const getAllMaterials = async (req: Request, res: Response) => {
     });
   }
 };
+
+/**
+ * Retrieves a material from the database by its ID and sends a JSON response.
+ * @param {import('express').Request} req - The Express Request object containing the material ID in req.params.id.
+ * @param {import('express').Response} res - The Express Response object used to send JSON responses.
+ * @returns {Promise<void>} Retrieves a material from the database by its ID and sends a JSON result.
+ */
 
 export const getMaterialById = async (req: Request, res: Response) => {
   const materialId = req.params.id;
@@ -46,6 +60,13 @@ export const getMaterialById = async (req: Request, res: Response) => {
     });
   }
 };
+
+/**
+ * Creates a new material in the database with the provided details and uploads the image to S3.
+ * @param {import('express').Request} req - The Express Request object containing the material details in req.body.
+ * @param {import('express').Response} res - The Express Response object used to send JSON responses.
+ * @returns {Promise<void>} Creates a new material in the database with the provided details and uploads the image to S3.
+ */
 
 export const createMaterial = async (req: Request, res: Response) => {
   const { name, technology, colors, pricePerGram, imageUrl } = req.body;
@@ -84,6 +105,13 @@ export const createMaterial = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Updates a material in the database by its ID with the provided details.
+ * @param {import('express').Request} req - The Express Request object containing the material ID in req.params.id and update details in req.body.
+ * @param {import('express').Response} res - The Express Response object used to send JSON responses.
+ * @returns {Promise<void>} Updates a material in the database by its ID with the provided details..
+ */
+
 export const updateMaterialById = async (req: Request, res: Response) => {
   const materialId = req.params.id;
   const { name, technology, colors, pricePerGram, imageUrl } = req.body;
@@ -117,6 +145,13 @@ export const updateMaterialById = async (req: Request, res: Response) => {
     });
   }
 };
+
+/**
+ * Deletes a material from the database by its ID.
+ * @param {import('express').Request} req - The Express Request object containing the material ID in req.params.id.
+ * @param {import('express').Response} res - The Express Response object used to send JSON responses.
+ * @returns {Promise<void>} Deletes a material from the database by its ID..
+ */
 
 export const deleteMaterial = async (req: Request, res: Response) => {
   const materialId = req.params.id;
