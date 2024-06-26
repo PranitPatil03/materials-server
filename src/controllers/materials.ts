@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { MaterialType } from "../services/types";
 import { Materials } from "../models/Materials";
+import { uploadImageToS3 } from "../services/s3";
 
 export const getAllMaterials = async (req: Request, res: Response) => {
   try {
@@ -50,12 +51,20 @@ export const createMaterial = async (req: Request, res: Response) => {
   const { name, technology, colors, pricePerGram, imageUrl } = req.body;
 
   try {
+    if (!imageUrl) {
+      return res
+        .status(400)
+        .json({ message: "Image URL or reference is required" });
+    }
+
+    const uploadedImageUrl = await uploadImageToS3(imageUrl);
+
     const newMaterial = new Materials({
       name,
       technology,
       colors,
       pricePerGram,
-      imageUrl,
+      imageUrl: uploadedImageUrl,
     });
 
     const material: MaterialType = await newMaterial.save();
