@@ -12,10 +12,22 @@ connectToDatabase();
 
 const app = express();
 app.use(express.json());
-app.use(cors());  
+app.use(cors());
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/materials", materialRouter);
+
+app.get("/", (req: Request, res: Response) => {
+  try {
+    res.send({
+      message: "Server is now running. View API documentation at /docs.",
+    });
+  } catch (error: any) {
+    res.send({
+      message: error.message,
+    });
+  }
+});
 
 app.get("/healthy", (req: Request, res: Response) => {
   try {
