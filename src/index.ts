@@ -1,21 +1,20 @@
+import "dotenv/config";
 import cors from "cors";
-import dotenv from "dotenv";
-import express, { Request, Response } from "express";
+import swaggerUi from "swagger-ui-express";
 import { connectToDatabase } from "./services/db";
 import { materialRouter } from "./routes/materials";
-import swaggerUi from "swagger-ui-express";
+import express, { Request, Response } from "express";
 import swaggerDocument from "./../swagger-output.json";
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
-dotenv.config();
 connectToDatabase();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors());  
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/materials", materialRouter);
 
 app.get("/healthy", (req: Request, res: Response) => {
